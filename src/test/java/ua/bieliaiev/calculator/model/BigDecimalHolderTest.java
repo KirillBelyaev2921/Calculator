@@ -8,8 +8,21 @@ import static org.hamcrest.Matchers.equalTo;
 class BigDecimalHolderTest {
 
 	@Test
-	void getDouble() {
-		BigDecimalHolder number = new BigDecimalHolder();
+	void getZeroFromIntegerString() {
+		BigDecimalHolder number = new BigDecimalHolder("0");
 		assertThat(number.getDouble(), equalTo(0.0));
+	}
+
+	@Test
+	void getZeroFromDoubleString() {
+		BigDecimalHolder number = new BigDecimalHolder("0.0");
+		assertThat(number.getDouble(), equalTo(0.0));
+	}
+
+	@Test
+	void getNumberFromNumberString() {
+		double value = 1.1;
+		BigDecimalHolder number = new BigDecimalHolder("" + value);
+		assertThat(number.getDouble(), equalTo(value));
 	}
 }
