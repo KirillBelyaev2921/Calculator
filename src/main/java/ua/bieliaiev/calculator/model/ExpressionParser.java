@@ -1,7 +1,7 @@
 package ua.bieliaiev.calculator.model;
 
 public interface ExpressionParser<T, U> {
-	T parseExpression();
+	T parseExpression(U expression);
 	boolean isExpressionValid();
 	U getExpression();
 }
