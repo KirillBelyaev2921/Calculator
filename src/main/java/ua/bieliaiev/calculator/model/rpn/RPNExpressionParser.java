@@ -25,7 +25,7 @@ public class RPNExpressionParser implements ExpressionParser<String, String> {
 
 	@Override
 	public String parseExpression() {
-		Pattern pattern = Pattern.compile("([0-9]+)([+]?)");
+		Pattern pattern = Pattern.compile("([0-9]+)([-+*/]?)");
 		Matcher m = pattern.matcher(expression);
 
 		Deque<String> outputQueue = new LinkedList<>();

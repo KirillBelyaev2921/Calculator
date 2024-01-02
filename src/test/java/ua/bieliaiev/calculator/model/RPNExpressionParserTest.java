@@ -7,16 +7,44 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 class RPNExpressionParserTest {
-	private RPNExpressionParser parser;
-
 
 	@Test
-	void parseExpression() {
+	void parseSimplePlusExpression() {
 		String expression = "1+2";
-		parser = new RPNExpressionParser(expression);
+		RPNExpressionParser parser = new RPNExpressionParser(expression);
 
 		String result = parser.parseExpression();
 
 		assertThat(result, equalTo("1,2,+"));
+	}
+
+	@Test
+	void parseSimpleMinusExpression() {
+		String expression = "1-2";
+		RPNExpressionParser parser = new RPNExpressionParser(expression);
+
+		String result = parser.parseExpression();
+
+		assertThat(result, equalTo("1,2,-"));
+	}
+
+	@Test
+	void parseSimpleMultiplyExpression() {
+		String expression = "1*2";
+		RPNExpressionParser parser = new RPNExpressionParser(expression);
+
+		String result = parser.parseExpression();
+
+		assertThat(result, equalTo("1,2,*"));
+	}
+
+	@Test
+	void parseSimpleDivideExpression() {
+		String expression = "1/2";
+		RPNExpressionParser parser = new RPNExpressionParser(expression);
+
+		String result = parser.parseExpression();
+
+		assertThat(result, equalTo("1,2,/"));
 	}
 }
