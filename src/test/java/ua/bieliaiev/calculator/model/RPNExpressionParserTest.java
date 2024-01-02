@@ -1,23 +1,22 @@
 package ua.bieliaiev.calculator.model;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ua.bieliaiev.calculator.model.rpn.RPNExpressionParser;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.equalTo;
 
 class RPNExpressionParserTest {
 	private RPNExpressionParser parser;
 
-	@BeforeEach
-	void createRPNExpressionParser() {
-		parser = new RPNExpressionParser();
-	}
 
 	@Test
 	void parseExpression() {
-		String result = parser.parseExpression("");
+		String expression = "1+2";
+		parser = new RPNExpressionParser(expression);
 
-		assertThat(result, nullValue());
+		String result = parser.parseExpression();
+
+		assertThat(result, equalTo("1,2,+"));
 	}
 }
