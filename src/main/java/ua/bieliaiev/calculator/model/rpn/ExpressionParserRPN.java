@@ -14,19 +14,19 @@ import java.util.regex.Pattern;
  * Example: for expression '5*2+1', the result will be: '5,2,*,1,+'.
  *
  */
-public class RPNExpressionParser implements ExpressionParser<String, String> {
+public class ExpressionParserRPN implements ExpressionParser<String, String> {
 
 	private String expression;
+	private static final Pattern pattern =
+			Pattern.compile("([0-9]+)([-+*/]?)");
 
-	public RPNExpressionParser(String expression) {
-		Objects.requireNonNull(expression);
-		this.expression = expression;
-	}
 
 	@Override
-	public String parseExpression() {
-		Pattern pattern = Pattern.compile("([0-9]+)([-+*/]?)");
-		Matcher m = pattern.matcher(expression);
+	public String parseExpression(String expression) {
+		Objects.requireNonNull(expression);
+		this.expression = expression.replace(" ", "");
+
+		Matcher m = pattern.matcher(this.expression);
 
 		Deque<String> outputQueue = new LinkedList<>();
 		Deque<String> operatorStack = new LinkedList<>();
@@ -47,15 +47,5 @@ public class RPNExpressionParser implements ExpressionParser<String, String> {
 		}
 
 		return String.join(",", outputQueue);
-	}
-
-	@Override
-	public boolean isExpressionValid() {
-		return false;
-	}
-
-	@Override
-	public String getExpression() {
-		return null;
 	}
 }
