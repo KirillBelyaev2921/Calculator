@@ -53,6 +53,24 @@ class ExpressionParserRPNTest {
 		assertThat(result, equalTo("1,2,+"));
 	}
 
+	@Test
+	void parsePlusOperatorAfterMultiplyOperator() {
+		String expression = "1*2+3";
+
+		String result = getResultFromParser(expression);
+
+		assertThat(result, equalTo("1,2,*,3,+"));
+	}
+
+	@Test
+	void parseMultiplyOperatorAfterPlusOperator() {
+		String expression = "1+2*3";
+
+		String result = getResultFromParser(expression);
+
+		assertThat(result, equalTo("1,2,3,*,+"));
+	}
+
 	private String getResultFromParser(String expression) {
 		ExpressionParserRPN parser = new ExpressionParserRPN();
 		return parser.parseExpression(expression);

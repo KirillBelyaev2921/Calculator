@@ -5,6 +5,7 @@ import ua.bieliaiev.calculator.model.ExpressionParser;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +26,7 @@ public class ExpressionParserRPN implements ExpressionParser<String, String> {
 	public String parseExpression(String expression) {
 		removeSpacesAndInitiateExpression(expression);
 		iterateExpression();
-		addTrailingOperatorsToOutput();
+		addTrailingOperatorsToOutput(() -> !operatorStack.isEmpty());
 		return String.join(",", outputQueue);
 	}
 
@@ -45,8 +46,18 @@ public class ExpressionParserRPN implements ExpressionParser<String, String> {
 
 	private void addOperatorToOperatorStack(String operator) {
 		if (!operator.equals("")) {
+			addTrailingOperatorsToOutput(() -> isGreaterPriority(operator));
 			operatorStack.push(operator);
 		}
+	}
+
+	private boolean isGreaterPriority(String currentOperator) {
+		if (operatorStack.isEmpty()) {
+			return false;
+		}
+		String operatorFromStack = operatorStack.peek();
+		return (currentOperator.equals("+") || currentOperator.equals("-"))
+				&& (operatorFromStack.equals("*") || operatorFromStack.equals("/"));
 	}
 
 	private void addNumberToOutputQueue(String number) {
@@ -55,11 +66,10 @@ public class ExpressionParserRPN implements ExpressionParser<String, String> {
 		}
 	}
 
-	private void addTrailingOperatorsToOutput() {
-		while (!operatorStack.isEmpty()) {
+	private void addTrailingOperatorsToOutput(Supplier<Boolean> conditionToAdd) {
+		while (conditionToAdd.get()) {
 			outputQueue.add(operatorStack.pop());
 		}
-
 	}
 
 }
