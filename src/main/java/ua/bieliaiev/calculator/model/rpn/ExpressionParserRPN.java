@@ -1,6 +1,7 @@
 package ua.bieliaiev.calculator.model.rpn;
 
 import ua.bieliaiev.calculator.model.ExpressionParser;
+import ua.bieliaiev.calculator.model.operators.Operation;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -56,8 +57,7 @@ public class ExpressionParserRPN implements ExpressionParser<String, String> {
 			return false;
 		}
 		String operatorFromStack = operatorStack.peek();
-		return (currentOperator.equals("+") || currentOperator.equals("-"))
-				&& (operatorFromStack.equals("*") || operatorFromStack.equals("/"));
+		return Operation.comparePriorities(currentOperator, operatorFromStack) <= 0;
 	}
 
 	private void addNumberToOutputQueue(String number) {
