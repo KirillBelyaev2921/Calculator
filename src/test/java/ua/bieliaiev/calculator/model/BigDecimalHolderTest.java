@@ -39,4 +39,13 @@ class BigDecimalHolderTest {
 
 	}
 
+	@Test
+	void getExceptionWhenNullStringParsed() {
+		String improperValue = null;
+
+		assertThrows(NullPointerException.class,
+				() -> new BigDecimalHolder(improperValue));
+
+	}
+
 }
