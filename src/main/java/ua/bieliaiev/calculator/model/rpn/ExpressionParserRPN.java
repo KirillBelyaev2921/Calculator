@@ -38,11 +38,21 @@ public class ExpressionParserRPN implements ExpressionParser<String, String> {
 	}
 
 	private void iterateExpression() {
-		Matcher m = pattern.matcher(this.expression);
+		Matcher m = pattern.matcher(expression);
 
+		int lastCharacterIndex = 0;
 		while (m.find()) {
+			if (lastCharacterIndex != m.start()) {
+				throw new IllegalArgumentException("Illegal substring: \"" + expression.substring(lastCharacterIndex, m.start())
+						+ "\" in expression: \"" + expression + "\"");
+			}
 			addNumberToOutputQueue(m.group(1));
 			addOperatorToOperatorStack(m.group(2));
+			lastCharacterIndex = m.end();
+		}
+		if (lastCharacterIndex != expression.length()) {
+			throw new IllegalArgumentException("Illegal substring: \"" + expression.substring(lastCharacterIndex)
+					+ "\" in expression: \"" + expression + "\"");
 		}
 	}
 

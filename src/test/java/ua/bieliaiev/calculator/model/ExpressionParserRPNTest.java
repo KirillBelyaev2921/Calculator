@@ -5,6 +5,7 @@ import ua.bieliaiev.calculator.model.rpn.ExpressionParserRPN;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ExpressionParserRPNTest {
 
@@ -78,6 +79,31 @@ class ExpressionParserRPNTest {
 		String result = getResultFromParser(expression);
 
 		assertThat(result, equalTo("1,2,/,3,*"));
+	}
+	@Test
+	void parseExpressionWithWrongCharacter() {
+		String expression = "a";
+
+		assertThrows(IllegalArgumentException.class, () ->
+				getResultFromParser(expression));
+
+	}
+	@Test
+	void parseExpressionWithWrongCharacterInMiddleOfOperators() {
+		String expression = "1+a2";
+
+		assertThrows(IllegalArgumentException.class, () ->
+				getResultFromParser(expression));
+
+	}
+
+	@Test
+	void parseExpressionWithIllegalDoubleOperator() {
+		String expression = "1++2";
+
+		assertThrows(IllegalArgumentException.class, () ->
+				getResultFromParser(expression));
+
 	}
 
 	private String getResultFromParser(String expression) {
