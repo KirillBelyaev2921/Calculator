@@ -1,10 +1,10 @@
 package ua.bieliaiev.calculator.model.rpn;
 
 import ua.bieliaiev.calculator.model.ExpressionParser;
+import ua.bieliaiev.calculator.model.operators.OperatorsPool;
 
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -75,24 +75,5 @@ public class ExpressionParserRPN implements ExpressionParser<String, String> {
 		}
 	}
 
-	public static class OperatorsPool {
-		Map<String, Integer> operations;
-
-		public OperatorsPool() {
-			this.operations = Map.of(
-					"+", 1,
-					"-", 1,
-					"*", 2,
-					"/", 2
-			);
-		}
-
-		public int isFirstOperatorHasHigherPriority(String operationSign1, String operationSign2) {
-
-			return Integer.compare(operations.get(operationSign1),
-					operations.get(operationSign2));
-		}
-
-	}
 
 }
