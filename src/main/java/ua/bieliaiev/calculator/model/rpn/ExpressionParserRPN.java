@@ -22,7 +22,7 @@ public class ExpressionParserRPN implements ExpressionParser<String, String> {
 	private Deque<String> operatorStack = new LinkedList<>();
 
 	private static final Pattern pattern =
-			Pattern.compile("([0-9]+)([-+*/]?)");
+			Pattern.compile("([0-9]+([.][0-9]+)?)([-+*/]?)");
 
 	@Override
 	public String parseExpression(String expression) {
@@ -47,7 +47,7 @@ public class ExpressionParserRPN implements ExpressionParser<String, String> {
 						+ "\" in expression: \"" + expression + "\"");
 			}
 			addNumberToOutputQueue(m.group(1));
-			addOperatorToOperatorStack(m.group(2));
+			addOperatorToOperatorStack(m.group(3));
 			lastCharacterIndex = m.end();
 		}
 		if (lastCharacterIndex != expression.length()) {

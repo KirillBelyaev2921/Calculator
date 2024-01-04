@@ -80,6 +80,24 @@ class ExpressionParserRPNTest {
 
 		assertThat(result, equalTo("1,2,/,3,*"));
 	}
+
+	@Test
+	void parseExpressionWithDoubleValue() {
+		String expression = "1.2+2";
+
+		String result = getResultFromParser(expression);
+
+		assertThat(result, equalTo("1.2,2,+"));
+	}
+	@Test
+	void parseExpressionWithWrongFormattedDoubleValue() {
+		String expression = "1.+2";
+
+		assertThrows(IllegalArgumentException.class, () ->
+				getResultFromParser(expression));
+
+	}
+
 	@Test
 	void parseExpressionWithWrongCharacter() {
 		String expression = "a";
@@ -88,6 +106,7 @@ class ExpressionParserRPNTest {
 				getResultFromParser(expression));
 
 	}
+
 	@Test
 	void parseExpressionWithWrongCharacterInMiddleOfOperators() {
 		String expression = "1+a2";
@@ -105,13 +124,11 @@ class ExpressionParserRPNTest {
 				getResultFromParser(expression));
 
 	}
+
 	@Test
 	void parseNullExpression() {
-		String expression = null;
-
 		assertThrows(NullPointerException.class, () ->
-				getResultFromParser(expression));
-
+				getResultFromParser(null));
 	}
 
 	private String getResultFromParser(String expression) {
