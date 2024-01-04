@@ -105,6 +105,14 @@ class ExpressionParserRPNTest {
 				getResultFromParser(expression));
 
 	}
+	@Test
+	void parseNullExpression() {
+		String expression = null;
+
+		assertThrows(NullPointerException.class, () ->
+				getResultFromParser(expression));
+
+	}
 
 	private String getResultFromParser(String expression) {
 		ExpressionParserRPN parser = new ExpressionParserRPN();
