@@ -1,10 +1,10 @@
 package ua.bieliaiev.calculator.model.rpn;
 
 import ua.bieliaiev.calculator.model.ExpressionParser;
-import ua.bieliaiev.calculator.model.operators.Operation;
 
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -16,10 +16,11 @@ import java.util.regex.Pattern;
  * Example: for expression '5*2+1', the result will be: '5,2,*,1,+'.
  */
 public class ExpressionParserRPN implements ExpressionParser<String, String> {
-
+	private OperatorsPool operatorsPool = new OperatorsPool();
 	private String expression;
-	Deque<String> outputQueue = new LinkedList<>();
-	Deque<String> operatorStack = new LinkedList<>();
+	private Deque<String> outputQueue = new LinkedList<>();
+	private Deque<String> operatorStack = new LinkedList<>();
+
 	private static final Pattern pattern =
 			Pattern.compile("([0-9]+)([-+*/]?)");
 
@@ -57,7 +58,9 @@ public class ExpressionParserRPN implements ExpressionParser<String, String> {
 			return false;
 		}
 		String operatorFromStack = operatorStack.peek();
-		return Operation.comparePriorities(currentOperator, operatorFromStack) <= 0;
+		return operatorsPool
+				.isFirstOperatorHasHigherPriority(currentOperator,
+						operatorFromStack) <= 0;
 	}
 
 	private void addNumberToOutputQueue(String number) {
@@ -70,6 +73,26 @@ public class ExpressionParserRPN implements ExpressionParser<String, String> {
 		while (conditionToAdd.get()) {
 			outputQueue.add(operatorStack.pop());
 		}
+	}
+
+	public static class OperatorsPool {
+		Map<String, Integer> operations;
+
+		public OperatorsPool() {
+			this.operations = Map.of(
+					"+", 1,
+					"-", 1,
+					"*", 2,
+					"/", 2
+			);
+		}
+
+		public int isFirstOperatorHasHigherPriority(String operationSign1, String operationSign2) {
+
+			return Integer.compare(operations.get(operationSign1),
+					operations.get(operationSign2));
+		}
+
 	}
 
 }
